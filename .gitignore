@@ -1,0 +1,9 @@
+#
+.idea
+.vscode/
+.devcontainer/
+artifacts
+db/
+vendor/
+tmp/
+

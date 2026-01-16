@@ -1,0 +1,4 @@
+listenPort: 5000
+database:
+  driver: sqlite
+  dsn: "/data/db/api-service-template.db"
