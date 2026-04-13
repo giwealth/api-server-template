@@ -18,8 +18,6 @@ var (
 		wire.NewSet(
 			infra.NewUserDBRepository,
 			wire.Bind(new(adapter.UserRepository), new(*infra.UserDBRepository)),
-			infra.NewAdministratorDBRepository,
-			wire.Bind(new(adapter.AdministratorRepository), new(*infra.AdministratorDBRepository)),
 		),
 	)
 
@@ -36,15 +34,7 @@ var (
 		serviceSet,
 		dbRepositorySet,
 		wire.Struct(new(command.CreateUserHandler), "*"),
-		wire.Struct(new(command.DeleteUserHandler), "*"),
 		wire.Struct(new(command.UpdateUserHandler), "*"),
-		wire.Struct(new(command.FindUserHandler), "*"),
-		wire.Struct(new(command.ListUserHandler), "*"),
-		wire.Struct(new(command.CreateAdministratorHandler), "*"),
-		wire.Struct(new(command.DeleteAdministratorHandler), "*"),
-		wire.Struct(new(command.UpdateAdministratorHandler), "*"),
-		wire.Struct(new(command.FindAdministratorHandler), "*"),
-		wire.Struct(new(command.ListAdministratorHandler), "*"),
 		wire.Struct(new(Commands), "*"),
 	)
 )

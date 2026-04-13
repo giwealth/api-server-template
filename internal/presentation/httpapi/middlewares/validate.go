@@ -12,7 +12,7 @@ func ValidateHeaders(ctx *gin.Context) {
 	method := ctx.Request.Method
 	if method == "POST" || method == "PUT" {
 		t := headers["Content-Type"]
-		if t[0] != "application/json" {
+		if len(t) == 0 || t[0] != "application/json" {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "content-type header is not application/json"})
 			return
 		}

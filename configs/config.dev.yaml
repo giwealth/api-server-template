@@ -1,4 +1,5 @@
-listenPort: 5000
+listenPort: 5001
 database:
   driver: sqlite
-  dsn: "/data/db/api-service-template.db"
+  # 相对进程工作目录，在仓库根目录执行 make serve 时会在该目录下生成库文件
+  dsn: "api-service-template.db"

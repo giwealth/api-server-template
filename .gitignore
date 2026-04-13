@@ -6,4 +6,5 @@ artifacts
 db/
 vendor/
 tmp/
+api-service-template.db
 

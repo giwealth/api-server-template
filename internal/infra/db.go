@@ -8,6 +8,5 @@ import (
 func Init(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&userRow{},
-		&administratorRow{},
 	)
 }

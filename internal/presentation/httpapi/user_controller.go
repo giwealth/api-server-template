@@ -40,10 +40,10 @@ func (c *userController) Create(ctx context.Context, req *request.User) (*apiRes
 }
 
 // Delete 删除用户
-// @Router /api/users/:id [delete]
+// @Router /api/users [delete]
 func (c *userController) Delete(ctx context.Context, req *request.User) (*apiResponse, error) {
 	// 此处如果没有其它业务逻辑, 只是操作数据库就直接使用 c.App.Repositories.User.Delete()
-	if err := c.App.Commands.DeleteUser.Handle(ctx, req.ID); err != nil {
+	if err := c.App.Repositories.User.Delete(ctx, req.ID); err != nil {
 		return nil, err
 	}
 
@@ -51,7 +51,7 @@ func (c *userController) Delete(ctx context.Context, req *request.User) (*apiRes
 }
 
 // Update 修改用户
-// @Router /api/users/:id [put]
+// @Router /api/users [put]
 func (c *userController) Update(ctx context.Context, req *request.User) (*apiResponse, error) {
 	user := domain.User{
 		ID:      req.ID,
@@ -68,10 +68,10 @@ func (c *userController) Update(ctx context.Context, req *request.User) (*apiRes
 }
 
 // Find 获取用户
-// @Router /api/users/:id [get]
-func (c *userController) Find(ctx context.Context, req *request.User) (*apiResponse, error) {
+// @Router /api/users/detail [get]
+func (c *userController) Detail(ctx context.Context, req *request.User) (*apiResponse, error) {
 	// 此处如果没有其它业务逻辑, 只是操作数据库就直接使用 c.App.Repositories.User.Find()
-	user, err := c.App.Commands.FindUser.Handle(ctx, req.ID)
+	user, err := c.App.Repositories.User.Find(ctx, req.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (c *userController) Find(ctx context.Context, req *request.User) (*apiRespo
 // @Router /api/users [get]
 func (c *userController) List(ctx context.Context, req *request.Query) (*apiResponse, error) {
 	// 此处如果没有其它业务逻辑, 只是操作数据库就直接使用 c.App.Repositories.User.List()
-	users, total, err := c.App.Commands.ListUser.Handle(ctx, req.Page, req.Limit)
+	users, total, err := c.App.Repositories.User.List(ctx, req.Page, req.Limit)
 	if err != nil {
 		return nil, err
 	}

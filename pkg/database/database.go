@@ -2,7 +2,6 @@ package database
 
 import (
 	"os"
-	"time"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -32,7 +31,7 @@ func NewDB(opt Option) (*gorm.DB, error) {
 		sqlDB.SetMaxOpenConns(opt.MaxOpenConns)
 	}
 	if opt.MaxIdleConns > 0 {
-		sqlDB.SetConnMaxIdleTime(time.Duration(opt.MaxIdleConns))
+		sqlDB.SetMaxIdleConns(opt.MaxIdleConns)
 	}
 
 	if os.Getenv("LEVEL") == "debug" {

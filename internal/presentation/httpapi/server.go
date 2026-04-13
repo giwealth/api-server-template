@@ -6,7 +6,6 @@ import (
 	"net"
 	"net/http"
 
-	"api-service-template/docs"
 	"api-service-template/internal/option"
 	mw "api-service-template/internal/presentation/httpapi/middlewares"
 	"api-service-template/pkg/logger"
@@ -29,7 +28,6 @@ func NewServer() *Server {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 
-	r.StaticFS("/docs", http.FS(docs.StaticFS))
 	g := r.Group("/api")
 
 	cfg := cors.DefaultConfig()
