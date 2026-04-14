@@ -36,6 +36,7 @@ func NewServer() *Server {
 	cfg.AddAllowHeaders("*")
 
 	g.Use(cors.New(cfg))
+	g.Use(mw.Timeout)
 	g.Use(mw.ValidateHeaders)
 	g.Use(mw.RequestLogger)
 	g.Use(gin.CustomRecoveryWithWriter(panicWriter{}, func(c *gin.Context, e interface{}) {

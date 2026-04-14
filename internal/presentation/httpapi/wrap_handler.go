@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-	"time"
 
 	mw "api-service-template/internal/presentation/httpapi/middlewares"
 	// "api-service-template/internal/presentation/httpapi/response"
@@ -42,12 +41,7 @@ func wrapHandler(fn interface{}) func(*gin.Context) {
 			}
 		}
 
-		// 接口超时时间
-		ctx := c.Request.Context()
-		ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
-		defer cancel()
-
-		resp, err := call2(fn, ctx, r)
+		resp, err := call2(fn, c, r)
 		if err != nil {
 			responseError(c, err, errInternal)
 			return

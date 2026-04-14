@@ -1,14 +1,16 @@
 package middlewares
 
 import (
-	log "api-service-template/pkg/logger"
 	"bytes"
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"runtime"
 	"time"
+	log "api-service-template/pkg/logger"
+	"api-service-template/internal/domain"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hashicorp/go-multierror"
@@ -17,10 +19,10 @@ import (
 	commonLogger "gitlab.haochang.tv/gopkg/logger"
 )
 
-type currentUserIDKey string
+type currentUserIDKeyType string
 
 const (
-	currentUserID currentUserIDKey = "UserID"
+	currentUserIDKey currentUserIDKeyType = "UserID"
 )
 
 var logger *logrus.Logger
@@ -36,6 +38,21 @@ func init() {
 		f.Environment = os.Getenv("ENV")
 		f.TimeLayout = "2006-01-02T15:04:05.000-07:00"
 	}
+
+	// 环境变量LOG_TO_SYSLOG=1，开启日志输出到syslog
+	if os.Getenv("LOG_TO_SYSLOG") == "1" {
+		if err := log.HookSyslog(reqLogger, fmt.Sprintf("%s-request", os.Getenv("SERVICE"))); err != nil {
+			panic(errors.WithStack(err))
+		}
+	}
+
+	// 环境变量LOG_TO_STDOUT=0, 关闭日志输出到标准输出
+	if os.Getenv("LOG_TO_STDOUT") == "0" {
+		if err := log.HookStdOut(reqLogger); err != nil {
+			panic(errors.WithStack(err))
+		}
+	}
+
 	logger = reqLogger
 }
 
@@ -99,11 +116,12 @@ func getRequestUser(ctx *gin.Context) string {
 
 // CurrentUserID 当前的登录的用户ID
 func CurrentUserID(ctx context.Context) string {
-	u := ctx.Value(currentUserID)
-	if u == nil {
+	user := ctx.Value(currentUserIDKey)
+	if user == nil {
 		return ""
 	}
-	return u.(string)
+	
+	return fmt.Sprintf("%d", user.(*domain.User).ID)
 }
 
 const requestErrorKey = "requestError"
