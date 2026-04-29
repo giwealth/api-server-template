@@ -3,7 +3,6 @@ package httpapi
 import (
 	"api-service-template/internal/app"
 	"api-service-template/internal/domain"
-	"api-service-template/internal/option"
 	"api-service-template/internal/presentation/httpapi/request"
 
 	// "api-service-template/internal/presentation/httpapi/response"
@@ -14,9 +13,9 @@ type userController struct {
 	App *app.Application
 }
 
-func newUserController(opt *option.Options) *userController {
+func newUserController(application *app.Application) *userController {
 	return &userController{
-		App: app.NewApplication(opt.GetDB()),
+		App: application,
 	}
 }
 

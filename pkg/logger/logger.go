@@ -64,7 +64,7 @@ func HookSyslog(l *logrus.Logger, tag string) error {
 	return nil
 }
 
-// HookSyslog 关闭日志输出到标准输出
+// HookStdOut 关闭日志输出到标准输出
 func HookStdOut(l *logrus.Logger) error {
 	src, err := os.OpenFile(os.DevNull, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {

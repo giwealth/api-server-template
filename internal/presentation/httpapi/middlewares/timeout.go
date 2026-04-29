@@ -10,6 +10,7 @@ import (
 
 var timeout = 5 * time.Second
 
+// Timeout 超时中间件
 func Timeout(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), timeout)
 	defer cancel()
