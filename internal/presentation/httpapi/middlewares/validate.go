@@ -15,7 +15,10 @@ func ValidateHeaders(ctx *gin.Context) {
 		contentType := strings.TrimSpace(ctx.GetHeader("Content-Type"))
 		mediaType, _, err := mime.ParseMediaType(contentType)
 		if err != nil || mediaType != "application/json" {
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "content-type header is not application/json"})
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"code":    40000,
+				"message": "content-type header is not application/json",
+			})
 			return
 		}
 	}
