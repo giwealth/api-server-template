@@ -4,6 +4,7 @@ import (
 	"api-service-template/internal/app"
 	"api-service-template/internal/domain"
 	"api-service-template/internal/presentation/httpapi/request"
+	"time"
 
 	// "api-service-template/internal/presentation/httpapi/response"
 	"context"
@@ -86,7 +87,7 @@ func (c *userController) List(ctx context.Context, req *request.Query) (*apiResp
 	if err != nil {
 		return nil, err
 	}
-
+	time.Sleep(10 * time.Second)
 	return sendResponse(withData(dataFields{
 		"items": users,
 		"total": total,

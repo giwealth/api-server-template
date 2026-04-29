@@ -17,18 +17,21 @@ func Timeout(c *gin.Context) {
 
 	c.Request = c.Request.WithContext(ctx)
 
-	done := make(chan struct{})
+	done := make(chan struct{}, 1)
 	go func() {
 		c.Next()
-		close(done)
+		done <- struct{}{}
 	}()
 
 	select {
-	case <-ctx.Done():
-		c.Abort()
-		if !c.Writer.Written() {
-			c.JSON(http.StatusGatewayTimeout, gin.H{"code": 50004, "message": "请求超时"})
-		}
 	case <-done:
+		return
+	case <-ctx.Done():
+		SaveRequestError(c, context.DeadlineExceeded)
+		c.AbortWithStatusJSON(http.StatusGatewayTimeout, gin.H{
+			"code":    50004,
+			"message": "请求超时",
+		})
+		return
 	}
 }

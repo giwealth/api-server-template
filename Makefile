@@ -43,9 +43,6 @@ test: revive wire
 ## serve: start server
 .PHONY: serve
 serve: revive wire
-	cd ${MKFILE_DIR} && \
-	go mod tidy && \
-	wire gen ./internal/... && \
 	go run cmd/server/main.go --config configs/config.dev.yaml api
 
 ## mod_update: update go modules
