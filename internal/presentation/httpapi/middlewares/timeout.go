@@ -2,7 +2,6 @@ package middlewares
 
 import (
 	"context"
-	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,22 +15,5 @@ func Timeout(c *gin.Context) {
 	defer cancel()
 
 	c.Request = c.Request.WithContext(ctx)
-
-	done := make(chan struct{}, 1)
-	go func() {
-		c.Next()
-		done <- struct{}{}
-	}()
-
-	select {
-	case <-done:
-		return
-	case <-ctx.Done():
-		SaveRequestError(c, context.DeadlineExceeded)
-		c.AbortWithStatusJSON(http.StatusGatewayTimeout, gin.H{
-			"code":    50004,
-			"message": "请求超时",
-		})
-		return
-	}
+	c.Next()
 }

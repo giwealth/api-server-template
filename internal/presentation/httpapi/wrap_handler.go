@@ -41,7 +41,7 @@ func wrapHandler(fn interface{}) func(*gin.Context) {
 			}
 		}
 
-		resp, err := call2(fn, c, r)
+		resp, err := call2(fn, c.Request.Context(), r)
 		if err != nil {
 			responseError(c, err, errInternal)
 			return
